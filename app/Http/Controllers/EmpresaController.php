@@ -17,7 +17,8 @@ class EmpresaController extends Controller
     {
         //die("*");
         $response = array();
-        $data = empresaModel::select('empresa_nombre',
+        $data = empresaModel::select('empresa_id',
+        'empresa_nombre',
         'empresa_descripcion',
         'empresa_logo',
         'empresa_beneficios')->orderby('empresa_id', 'asc')->get();
@@ -31,6 +32,31 @@ class EmpresaController extends Controller
         }
 
         return response()->json($response, 200);
+
+    }
+
+    public function getEmpresasById($id){
+
+            $response = array();
+            $data = empresaModel::select('empresa_id',
+                    'empresa_nombre',
+                    'empresa_descripcion',
+                    'empresa_logo')
+                    ->where([
+                        ['empresa_id', '=', $id]
+                        ])->get();
+
+            if(count($data) > 0) {
+
+                $response['status'] = 'OK';
+                $response['EmpresasPorId'] = $data;
+                $response['n'] = count($data);
+            }else{
+
+                $response['status'] = 'Ha ocurrido un error';
+            }
+
+            return response()->json($response, 200);
 
     }
 
