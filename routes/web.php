@@ -21,7 +21,11 @@ use Illuminate\Support\Facades\Route;
 //$router->get('/demo/list-empresas', ['uses' => 'alexController@index']);
 Route::get('/demo/list-empresas', [EmpresaController::class, 'getEmpresas']);
 Route::get('/demo/list-empresasbyid/{id}', [EmpresaController::class, 'getEmpresasById']);
-Route::get('/users', 'App\Http\Controllers\UserController@index');
+Route::post('/demo/create-empresas', [EmpresaController::class, 'newEmpresa']);
+Route::put('/demo/{id}/update', [EmpresaController::class, 'putEmpresa']);
+Route::put('/demo/delete', [EmpresaController::class, 'deleteEmpresa']);
+
+//Route::get('/users', 'App\Http\Controllers\UserController@index');
 //  $router->get('/User',  [ 'uses' => 'UserController@getUsers' ] );
 
 
