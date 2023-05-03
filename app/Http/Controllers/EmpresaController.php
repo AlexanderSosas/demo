@@ -23,9 +23,12 @@ class EmpresaController extends Controller
         'empresa_logo',
         'empresa_beneficios')->orderby('empresa_id', 'asc')->get();
 
+        //var_dump($data);
+        //die();
+
         if(count($data) > 0){
             $response['status'] = 'OK';
-            $response['tbl-empresas'] = $data;
+            $response['tbl_empresas'] = $data;
             $response['n'] = count($data);
         }else{
             $response['status'] = 'ERROR';
@@ -62,14 +65,31 @@ class EmpresaController extends Controller
 
     public function newEmpresa(Request $request){
 
-        $countEmpresas = array();
-        $countEmpresas = empresaModel::where('empresa_id', '=', $request['empresa_id'])->first();
+        // var_dump($request['empresa_id']);
 
-        if(count($countEmpresas) == 0){
+        $countEmpresas = array();
+        // $countEmpresas = empresaModel::where('empresa_id', '=', $request['empresa_id'])->first();
+        $countEmpresas = $request->empresa;
+        // var_dump($request['empresa_id']);
+
+
+        if(!$countEmpresas > 0){
 
             $response = array();
-            $countEmpresas = empresaModel::create($request->all());
-        }else{
+
+            $empresaAdd = new empresaModel();
+            $empresaAdd->empresa_id = $request['empresa_id'];
+            $empresaAdd->empresa_nombre = $request['empresa_nombre'];
+            $empresaAdd->empresa_descripcion = $request['empresa_descripcion'];
+            $empresaAdd->empresa_logo = $request['empresa_logo'];
+            $empresaAdd->empresa_beneficios = $request['empresa_beneficios'];
+            $empresaAdd->save();
+
+            $response['status'] = 'OK';
+            $response['data'] = $empresaAdd;
+        }
+
+        else{
 
             $response['status'] = 'Ha ocurrido un error o existe la empresa';
         }

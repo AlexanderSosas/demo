@@ -19,6 +19,8 @@ class empresaModel extends Model
      'empresa_beneficios'
     ];
 
+    public $timestamps = false;
+
     //protected $dates = ['deleted_at'];
 
 
