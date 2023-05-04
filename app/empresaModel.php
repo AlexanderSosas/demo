@@ -13,7 +13,8 @@ class empresaModel extends Model
     protected $primarykey = 'empresa_id';
 
     protected $fillable =
-    ['empresa_nombre',
+    [
+     'empresa_nombre',
      'empresa_descripcion',
      'empresa_logo',
      'empresa_beneficios'

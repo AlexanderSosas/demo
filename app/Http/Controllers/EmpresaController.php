@@ -10,8 +10,15 @@ use Illuminate\Routing\Controller as BaseController;
 
 use App\empresaModel;
 
+use Validator;
+
 class EmpresaController extends Controller
 {
+
+    public function index(){
+
+        return view('empresa.index');
+    }
 
     public function getEmpresas()
     {
@@ -98,53 +105,43 @@ class EmpresaController extends Controller
 
     }
 
-    public function putEmpresa(Request $request, $id){
+    public function updateEmpresa(Request $request){
 
-        $idEmpresa = $request->json()->all();
+        // var_dump($request['empresa_id']);
+        // dd('RequestUpdate', $request->all());
+        // $data = array();
         $response = array();
+        // $dataInput = array();
+        $dataInput = $request->all();
 
-        if($idEmpresa != ''){
+        if($dataInput){
 
-            $dataFind = empresaModel::find($id);
-            $dataFind->fill($idEmpresa);
-            $dataFind->save();
-            $response['data'] = $dataFind; $response['status'] = 'OK';
+            $empresaAdd = empresaModel::findOrFail($request->id);
+            $empresaAdd->empresa_nombre =      $dataInput['empresa_nombre'];
+            $empresaAdd->empresa_descripcion = $dataInput['empresa_descripcion'];
+            $empresaAdd->empresa_logo =        $dataInput['empresa_logo'];
+            $empresaAdd->empresa_beneficios =  $dataInput['empresa_beneficios'];
+            $empresaAdd->save();
 
-            return response()->json($response, 200);
+            $response['status'] = 'OK';
+            $response['data'] = $empresaAdd;
+
+
+            return response()->json($response, 201);
+
+        }else{
+
+            $response['status'] = 'ERROR, access denied';
+            return response()->json($response, 401);
+
         }
-
-        return response()->json(['error' => 'No autorizado'], 401);
-        // empresaModel::where('empresa_id', '=', $id)->forceDelete();
-
-        // empresaModel::create([
-        //     'empresa_id' => $id,
-        //     'empresa_nombre' => $v["empresa_nombre"]
-        // ]);
 
     }
 
     public function deleteEmpresa(Request $request){
 
-        $delEmpresa = $request->json()->all();
-        $response = array();
-
-        if($delEmpresa != ''){
-
-            $data = empresaModel::where(['empresa_id' => $delEmpresa['empresa_id']])->delete();
-
-            $response['data'] = $data;
-            $response['status'] = 'OK';
-
-            return response()->json($response, 200);
-        }
-
-        return response()->json(['error' => 'No se pudo eliminar'], 401);
-        // empresaModel::where('empresa_id', '=', $id)->forceDelete();
-
-        // empresaModel::create([
-        //     'empresa_id' => $id,
-        //     'empresa_nombre' => $v["empresa_nombre"]
-        // ]);
+        $empresaDel = empresaModel::destroy($request->id);
+        return $empresaDel;
 
     }
 

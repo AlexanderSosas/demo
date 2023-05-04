@@ -18,19 +18,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-//$router->get('/demo/list-empresas', ['uses' => 'alexController@index']);
-Route::get('/demo/list-empresas', [EmpresaController::class, 'getEmpresas']);
-Route::get('/demo/list-empresasbyid/{id}', [EmpresaController::class, 'getEmpresasById']);
-Route::post('/demo/create-empresas', [EmpresaController::class, 'newEmpresa']);
-Route::put('/demo/{id}/update', [EmpresaController::class, 'putEmpresa']);
-Route::put('/demo/delete', [EmpresaController::class, 'deleteEmpresa']);
 
-//Route::get('/users', 'App\Http\Controllers\UserController@index');
-//  $router->get('/User',  [ 'uses' => 'UserController@getUsers' ] );
+Route::resource('empresas', 'App\Http\Controllers\EmpresasController');
 
+Route::get('/demo/api/list-empresas', [EmpresaController::class, 'getEmpresas']);
+Route::get('/demo/api/list-empresasbyid/{id}', [EmpresaController::class, 'getEmpresasById']);
+Route::post('/demo/api/create-empresas', [EmpresaController::class, 'newEmpresa']);
+Route::put('/demo/api/update-empresas/{id}', [EmpresaController::class, 'updateEmpresa']);
+Route::delete('/demo/api/delete/{id}', [EmpresaController::class, 'deleteEmpresa']);
 
 
-// $router->get('/demo/list-empresas', ['uses' => 'empresaController@getEmpresas']);
 
 
 
